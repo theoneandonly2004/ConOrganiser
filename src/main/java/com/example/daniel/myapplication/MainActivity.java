@@ -46,7 +46,7 @@ static int count=0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
-        buttons[0]=new EventButton(this.getBaseContext(),"Daniel Boyd","how to be awesome",new GregorianCalendar(2016,05,01,15,30));
+        buttons[0]=new EventButton(this.getBaseContext(),"Daniel Boyd","how to be awesome",new GregorianCalendar(2016,05,01,23,30));
 
         buttons[1]=new EventButton(this.getBaseContext(),"Kate","cosplay masquerade",new GregorianCalendar(2016,05,01,17,00));
 

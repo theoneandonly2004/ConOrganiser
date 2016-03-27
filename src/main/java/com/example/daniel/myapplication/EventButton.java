@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * Created by Daniel on 25/03/2016.
@@ -25,6 +26,7 @@ public class EventButton extends Button
     public String eventName;
     public Calendar eventDate;
     public Calendar backup;
+    private LinearLayout screen;
 
     public EventButton(Context context, String pHost, String pName, Calendar pDate)
     {
@@ -40,10 +42,45 @@ public class EventButton extends Button
 
     }
 
-    public boolean AddButtonToScreen(LinearLayout lineaerLayout1 , LinearLayout.LayoutParams lp){
+    public int getTimeDifference(){
+        Calendar currentTime=Calendar.getInstance();
+        int difference =0;
 
+        int startHour = eventDate.get(eventDate.HOUR_OF_DAY);
+        int currentHour = currentTime.get(currentTime.HOUR_OF_DAY);
+
+        int startMinute = eventDate.get(eventDate.MINUTE);
+        int currentMinute = currentTime.get(currentTime.MINUTE);
+
+        int overallStart = (startHour *60) + startMinute;
+        int overallCurrent = (currentHour * 60) + currentMinute;
+
+
+        int overall = overallStart - overallCurrent;
+        //Log.d("current Time", currentTime.toString());
+
+        Toast.makeText(getContext(), "time until event " + eventName + " is " + overall + " minutes away", Toast.LENGTH_SHORT).show();
+
+
+        return overall;
+    }
+
+    public boolean AddButtonToScreen(LinearLayout lineaerLayout1 , LinearLayout.LayoutParams lp){
+        screen = lineaerLayout1;
         lineaerLayout1.addView(button, lp);
         return false;
+    }
+
+    public void RemoveButtonFromScreen(){
+        if(screen != null){
+            Log.d("screen removal", "the button has been removed");
+            screen.removeView(button);
+            screen = null;
+        }
+        else{
+            Log.e("nothing to delete ","the specified variable does not exist");
+        }
+
     }
 
 
@@ -51,6 +88,7 @@ public class EventButton extends Button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                int timeTilEvent =getTimeDifference();
                 int day = eventDate.get(eventDate.DAY_OF_MONTH);
                 int month=eventDate.get(eventDate.MONTH);
                 int year=eventDate.get(eventDate.YEAR);
@@ -63,6 +101,14 @@ public class EventButton extends Button
                 }
 
 
+                if(timeTilEvent <= 15 && timeTilEvent > 0){
+                    Log.d("timeTilEvent " , "there is " + timeTilEvent + " minutes until the event " + eventName);
+                }
+                else if(timeTilEvent <= -15){
+                    Toast.makeText(getContext(), "sorry you have missed the event " + eventName, Toast.LENGTH_SHORT).show();
+                    Log.d("timeTilEvent" , "you missed the event " + eventName);
+                    RemoveButtonFromScreen();
+                }
 
 
                 String dateOutput= day + "/" + month +"/" + year + "\n " + hour + ":" + minutestring;
