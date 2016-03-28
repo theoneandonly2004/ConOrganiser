@@ -83,12 +83,36 @@ public class EventButton extends Button
 
     }
 
+    public boolean GetIsEventToday(){
+        Calendar currentDate = Calendar.getInstance();
+
+        int currentDay = currentDate.get(currentDate.DAY_OF_MONTH);
+        int currentMonth = currentDate.get(currentDate.MONTH);
+        int currentYear = currentDate.get(currentDate.YEAR);
+
+        int eventDay = eventDate.get(eventDate.DAY_OF_MONTH);
+        int eventMonth = eventDate.get(eventDate.MONTH);
+        int eventYear = eventDate.get(eventDate.YEAR);
+
+        if(currentYear == eventYear){
+            if(currentMonth == eventMonth){
+                if(currentDay == eventDay){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public void setOnClick() {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                int timeTilEvent =getTimeDifference();
+                FileManager.writeToFile(new Event(eventHost,eventName,eventDate),getContext());
+
+                FileManager.readFromFile(getContext());
+              /*  int timeTilEvent =getTimeDifference();
                 int day = eventDate.get(eventDate.DAY_OF_MONTH);
                 int month=eventDate.get(eventDate.MONTH);
                 int year=eventDate.get(eventDate.YEAR);
@@ -104,15 +128,15 @@ public class EventButton extends Button
                 if(timeTilEvent <= 15 && timeTilEvent > 0){
                     Log.d("timeTilEvent " , "there is " + timeTilEvent + " minutes until the event " + eventName);
                 }
-                else if(timeTilEvent <= -15){
+                else if(timeTilEvent <= -15  && GetIsEventToday() == true){
                     Toast.makeText(getContext(), "sorry you have missed the event " + eventName, Toast.LENGTH_SHORT).show();
-                    Log.d("timeTilEvent" , "you missed the event " + eventName);
+                    Log.d("timeTilEvent", "you missed the event " + eventName);
                     RemoveButtonFromScreen();
                 }
 
 
                 String dateOutput= day + "/" + month +"/" + year + "\n " + hour + ":" + minutestring;
-                Toast.makeText(getContext(), "speaker: " + eventHost + "\n topic: " + eventName + "\n date: " + dateOutput, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "speaker: " + eventHost + "\n topic: " + eventName + "\n date: " + dateOutput, Toast.LENGTH_SHORT).show();*/
             }
 
         });
