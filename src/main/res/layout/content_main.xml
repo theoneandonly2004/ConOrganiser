@@ -11,10 +11,16 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.daniel.myapplication.MainActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/LinearLayout1"
-        android:hapticFeedbackEnabled="false"></LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/LinearLayout1"
+            android:hapticFeedbackEnabled="false"></LinearLayout>
+    </ScrollView>
 </RelativeLayout>

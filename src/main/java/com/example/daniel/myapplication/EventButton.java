@@ -1,7 +1,10 @@
 package com.example.daniel.myapplication;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -22,18 +25,52 @@ import java.util.TimeZone;
 public class EventButton extends Button
 {
     public Button button = this;
+    public Event event;
     public String eventHost;
     public String eventName;
+    public String eventLocation;
     public Calendar eventDate;
-    public Calendar backup;
     private LinearLayout screen;
+    private int startingColor;
 
-    public EventButton(Context context, String pHost, String pName, Calendar pDate)
+    public EventButton(Context context , Event pEvent){
+        super(context);
+        eventDate = pEvent.eventDate;
+        eventName = pEvent.eventName;
+        eventHost = pEvent.eventHost;
+        eventLocation = pEvent.eventLocation;
+        event = pEvent;
+        startingColor =button.getDrawingCacheBackgroundColor();
+
+        if(FileManager.compare(event)){
+            button.setBackgroundColor(Color.RED);
+        }
+        else{
+            button.setBackgroundResource(android.R.drawable.btn_default);
+        }
+
+        setOnClick();
+
+        this.setText(eventName + "\n " + eventHost);
+    }
+
+    public EventButton(Context context, String pHost, String pName, Calendar pDate, String pEventLocation)
     {
         super(context);
         eventHost=pHost;
         eventName=pName;
         eventDate=pDate;
+        eventLocation = pEventLocation;
+        event = new Event(pHost, pName, pEventLocation, pDate);
+
+
+        if(FileManager.compare(event)){
+            button.setBackgroundColor(Color.RED);
+        }
+        else{
+            button.setBackgroundResource(android.R.drawable.btn_default);
+        }
+
         setOnClick();
 
 
@@ -59,7 +96,7 @@ public class EventButton extends Button
         int overall = overallStart - overallCurrent;
         //Log.d("current Time", currentTime.toString());
 
-        Toast.makeText(getContext(), "time until event " + eventName + " is " + overall + " minutes away", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "time until event " + eventName + " is " + overall + " minutes away", Toast.LENGTH_SHORT).show();
 
 
         return overall;
@@ -67,6 +104,8 @@ public class EventButton extends Button
 
     public boolean AddButtonToScreen(LinearLayout lineaerLayout1 , LinearLayout.LayoutParams lp){
         screen = lineaerLayout1;
+        lp.topMargin = 2;
+        lp.bottomMargin=2;
         lineaerLayout1.addView(button, lp);
         return false;
     }
@@ -109,23 +148,82 @@ public class EventButton extends Button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                FileManager.writeToFile(new Event(eventHost,eventName,eventDate),getContext());
 
-                FileManager.readFromFile(getContext());
-              /*  int timeTilEvent =getTimeDifference();
+                int timeTilEvent = getTimeDifference();
                 int day = eventDate.get(eventDate.DAY_OF_MONTH);
-                int month=eventDate.get(eventDate.MONTH);
-                int year=eventDate.get(eventDate.YEAR);
-                int hour=eventDate.get(eventDate.HOUR_OF_DAY);
-                int minute=eventDate.get(eventDate.MINUTE);
-                String minutestring=""+ minute;
+                int month = eventDate.get(eventDate.MONTH);
+                int year = eventDate.get(eventDate.YEAR);
+                int hour = eventDate.get(eventDate.HOUR_OF_DAY);
+                int minute = eventDate.get(eventDate.MINUTE);
+                String minutestring = "" + minute;
 
-                if(minutestring.length()==1){
-                    minutestring = "0"+minute;
+                if (minutestring.length() == 1) {
+                    minutestring = "0" + minute;
+                }
+                String dateOutput = day + "/" + month + "/" + year + "  " + hour + ":" + minutestring;
+
+                boolean isFound=FileManager.compare(event);
+
+                if (!isFound) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Event:" + eventName + "\nHost:" + eventHost + "\nLocation: " + eventLocation + "\nWhen: " + dateOutput);
+                    builder.setCancelable(true);
+
+                    builder.setPositiveButton(
+                            "Add Interest",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    FileManager.writeToFile(new Event(eventHost, eventName, eventLocation, eventDate), getContext());
+                                    FileManager.readFromFile(getContext());
+                                    button.setBackgroundColor(Color.RED);
+
+                                }
+                            });
+
+                    builder.setNegativeButton(
+                            "Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
+                }
+                else if (isFound) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Event:" + eventName + "\nHost:" + eventHost + "\nLocation: " + eventLocation + "\nWhen: " + dateOutput);
+                    builder.setCancelable(true);
+
+
+                    builder.setPositiveButton(
+                            "Remove Interest",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    FileManager.clearDuplicates(event);
+                                    FileManager.eventList.remove(event);
+                                    FileManager.updateFile(getContext());
+                                    button.setBackgroundResource(android.R.drawable.btn_default);
+                                    //FileManager.writeToFile(new Event(eventHost, eventName, eventLocation, eventDate), getContext());
+                                    //FileManager.readFromFile(getContext());
+                                }
+                            });
+
+                    builder.setNegativeButton(
+                            "Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
                 }
 
+            }
 
-                if(timeTilEvent <= 15 && timeTilEvent > 0){
+
+             /*   if(timeTilEvent <= 15 && timeTilEvent > 0){
                     Log.d("timeTilEvent " , "there is " + timeTilEvent + " minutes until the event " + eventName);
                 }
                 else if(timeTilEvent <= -15  && GetIsEventToday() == true){
@@ -135,11 +233,11 @@ public class EventButton extends Button
                 }
 
 
-                String dateOutput= day + "/" + month +"/" + year + "\n " + hour + ":" + minutestring;
-                Toast.makeText(getContext(), "speaker: " + eventHost + "\n topic: " + eventName + "\n date: " + dateOutput, Toast.LENGTH_SHORT).show();*/
-            }
 
-        });
+                Toast.makeText(getContext(), "speaker: " + eventHost + "\n topic: " + eventName + "\n date: " + dateOutput, Toast.LENGTH_SHORT).show();*/
+            });
+
+        }
 
     }
-}
+

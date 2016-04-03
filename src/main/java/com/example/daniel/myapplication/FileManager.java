@@ -17,14 +17,72 @@ import java.util.ArrayList;
  * Created by Daniel on 28/03/2016.
  */
 public class FileManager {
-    private static ArrayList<Event>eventList = new ArrayList<Event>();
+    public static ArrayList<Event>eventList = new ArrayList<Event>();
+
+    public static boolean compare(Event pEvent){
+        for(int count=0;count<eventList.size();count++){
+            if(pEvent.eventDate.equals(eventList.get(count).eventDate)){
+                if(pEvent.eventName.equals(eventList.get(count).eventName)) {
+                    if(pEvent.eventLocation.equals(eventList.get(count).eventLocation)){
+                        if(pEvent.eventHost.equals(eventList.get(count).eventHost)){
+                            Log.d("was found","wtf the event " + pEvent.eventName + " is identical to what's on the list");
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static void clearDuplicates(Event pEvent){
+        for(int count=0;count<eventList.size();count++){
+            if(pEvent.eventDate.equals(eventList.get(count).eventDate)){
+                if(pEvent.eventName.equals(eventList.get(count).eventName)) {
+                    if(pEvent.eventLocation.equals(eventList.get(count).eventLocation)){
+                        if(pEvent.eventHost.equals(eventList.get(count).eventHost)){
+                            eventList.remove(count);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void updateFile(Context pContext){
+        try {
+            pContext.openFileOutput("userEvents", pContext.MODE_PRIVATE).flush();
+            FileOutputStream fos = pContext.openFileOutput("userEvents", pContext.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+
+
+
+            for(int count=0;count < eventList.size();count++){
+                os.writeObject(eventList.get(count));
+            }
+
+
+
+            os.close();
+            fos.close();
+
+            for(int count=0;count < eventList.size();count++){
+                Log.d("event list " , eventList.get(count).eventName);
+            }
+        }
+        catch(Exception ex)
+        {
+            Log.w("exception writing out",ex.getMessage());
+        }
+    }
 
     public static void writeToFile(Event pEvent,Context pContext) {
         try {
-
             FileOutputStream fos = pContext.openFileOutput("userEvents", pContext.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
-            if(!eventList.contains(pEvent)) {
+            if(!compare(pEvent)) {
                 eventList.add(pEvent);
             }
 
