@@ -14,13 +14,30 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/calendar_button">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/LinearLayout1"
-            android:hapticFeedbackEnabled="false"></LinearLayout>
+            android:hapticFeedbackEnabled="false">
+
+        </LinearLayout>
     </ScrollView>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Events"
+        android:id="@+id/calendar_button"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#3cd7dc"
+        android:layout_alignParentLeft="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentBottom="false" />
+
 </RelativeLayout>

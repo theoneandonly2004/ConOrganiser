@@ -51,7 +51,7 @@ public class EventButton extends Button
 
         setOnClick();
 
-        this.setText(eventName + "\n " + eventHost);
+        this.setText(eventName + "\n " + eventHost + "\n");
     }
 
     public EventButton(Context context, String pHost, String pName, Calendar pDate, String pEventLocation)
@@ -102,11 +102,11 @@ public class EventButton extends Button
         return overall;
     }
 
-    public boolean AddButtonToScreen(LinearLayout lineaerLayout1 , LinearLayout.LayoutParams lp){
-        screen = lineaerLayout1;
-        lp.topMargin = 2;
-        lp.bottomMargin=2;
-        lineaerLayout1.addView(button, lp);
+    public boolean AddButtonToScreen(){
+        screen = MainActivity.linearLayout;
+        MainActivity.linearParams.topMargin = 2;
+        MainActivity.linearParams.bottomMargin=2;
+        MainActivity.linearLayout.addView(button, MainActivity.linearParams);
         return false;
     }
 
@@ -123,11 +123,30 @@ public class EventButton extends Button
     }
 
     public boolean GetIsEventToday(){
-        Calendar currentDate = Calendar.getInstance();
+    Calendar currentDate = Calendar.getInstance();
 
-        int currentDay = currentDate.get(currentDate.DAY_OF_MONTH);
-        int currentMonth = currentDate.get(currentDate.MONTH);
-        int currentYear = currentDate.get(currentDate.YEAR);
+    int currentDay = currentDate.get(currentDate.DAY_OF_MONTH);
+    int currentMonth = currentDate.get(currentDate.MONTH);
+    int currentYear = currentDate.get(currentDate.YEAR);
+
+    int eventDay = eventDate.get(eventDate.DAY_OF_MONTH);
+    int eventMonth = eventDate.get(eventDate.MONTH);
+    int eventYear = eventDate.get(eventDate.YEAR);
+
+    if(currentYear == eventYear){
+        if(currentMonth == eventMonth){
+            if(currentDay == eventDay){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+    public boolean GetIsEventToday(int year , int month , int day){
+        int currentDay = day;
+        int currentMonth = month + 1;
+        int currentYear = year;
 
         int eventDay = eventDate.get(eventDate.DAY_OF_MONTH);
         int eventMonth = eventDate.get(eventDate.MONTH);
@@ -140,6 +159,9 @@ public class EventButton extends Button
                 }
             }
         }
+
+        Log.d("date provided" , currentDay +"/" + currentMonth + "/" + currentYear);
+        Log.d("event date" , eventDay + "/" + eventMonth + "/" + eventYear);
         return false;
     }
 

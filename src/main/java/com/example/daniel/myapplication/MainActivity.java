@@ -1,6 +1,7 @@
 package com.example.daniel.myapplication;
 
 import android.app.ActionBar;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,10 +29,13 @@ public class MainActivity extends AppCompatActivity {
         return new GregorianCalendar(year,month,day,hour,minute);
     }
 
+
 static int count=0;
+    static LinearLayout linearLayout;
+    static LinearLayout.LayoutParams linearParams;
 
     //EventButton[] buttons = new EventButton[15];
-    ArrayList<EventButton> buttons = new ArrayList<EventButton>();
+    static ArrayList<EventButton> buttons = new ArrayList<EventButton>();
 
     public void addButtonToList(String pHost, String pName,String pEventLocation, Calendar pDate){
         Event event = new Event(pHost, pName, pEventLocation, pDate);
@@ -44,6 +48,17 @@ static int count=0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
         FileManager.readFromFile(getBaseContext());
+
+        Button calendarButton = (Button)findViewById(R.id.calendar_button);
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    DialogFragment newFragment = new DatePickerFragment();
+                    newFragment.show(getFragmentManager(), "datePicker");
+                }
+
+            });
+
 
         addButtonToList(Users.lisa + " & " + Users.bekaton, " Meet and greet", Event.COSPLAYROOM, setupDate(2016, 04, 30, 10, 00));
         addButtonToList(Users.stephen, " Screening: Teen Titans", Event.SCREENINGROOM, setupDate(2016, 04, 30, 10, 00));
@@ -71,6 +86,7 @@ static int count=0;
 
         addButtonToList(Users.lisa +" & " + Users.bekaton + " & " + Users.lorna + " & " + Users.stephen, "Cosplay Parade", Event.COSPLAYROOM, setupDate(2016, 04, 30, 16, 00));
 
+        addButtonToList(Users.lisa +" & " + Users.bekaton + " & " + Users.lorna + " & " + Users.stephen, "random event", Event.COSPLAYROOM, setupDate(2016, 05, 01, 16, 00));
 
 
 
@@ -83,13 +99,13 @@ static int count=0;
        */
 
 
-        LinearLayout ll = (LinearLayout) findViewById(R.id.LinearLayout1);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
+        linearLayout = (LinearLayout) findViewById(R.id.LinearLayout1);
+        linearParams = new LinearLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        linearParams.gravity = Gravity.CENTER;
 
         for(int count=0;count < buttons.size();count++){
             if(buttons.get(count) != null) {
-                buttons.get(count).AddButtonToScreen(ll, lp);
+                buttons.get(count).AddButtonToScreen();
             }
         }
 
