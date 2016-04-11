@@ -33,6 +33,13 @@ public class EventButton extends Button
     private LinearLayout screen;
     private int startingColor;
 
+    int day;
+    int month;
+    int year;
+    int hour;
+    int minute;
+    String dateOutput;
+
     public EventButton(Context context , Event pEvent){
         super(context);
         eventDate = pEvent.eventDate;
@@ -42,16 +49,31 @@ public class EventButton extends Button
         event = pEvent;
         startingColor =button.getDrawingCacheBackgroundColor();
 
+        day = eventDate.get(eventDate.DAY_OF_MONTH);
+        month = eventDate.get(eventDate.MONTH);
+        minute = eventDate.get(eventDate.MINUTE);
+        hour = eventDate.get(eventDate.HOUR_OF_DAY);
+        year = eventDate.get(eventDate.YEAR);
+
+        String minutestring = "" + minute;
+
+        if (minutestring.length() == 1) {
+            minutestring = "0" + minute;
+        }
+        dateOutput = day + "/" + month + "/" + year + "  " + hour + ":" + minutestring;
+
         if(FileManager.compare(event)){
             button.setBackgroundColor(Color.RED);
+            button.setText(eventName + "\n " + eventHost + "\n" + eventLocation + "\n" + dateOutput);
         }
         else{
             button.setBackgroundResource(android.R.drawable.btn_default);
+            this.setText(eventName + "\n " + eventHost);
         }
 
         setOnClick();
 
-        this.setText(eventName + "\n " + eventHost + "\n");
+
     }
 
     public EventButton(Context context, String pHost, String pName, Calendar pDate, String pEventLocation)
@@ -64,18 +86,33 @@ public class EventButton extends Button
         event = new Event(pHost, pName, pEventLocation, pDate);
 
 
+        day = eventDate.get(eventDate.DAY_OF_MONTH);
+        month = eventDate.get(eventDate.MONTH);
+        minute = eventDate.get(eventDate.MINUTE);
+        hour = eventDate.get(eventDate.HOUR_OF_DAY);
+        year = eventDate.get(eventDate.YEAR);
+
+        String minutestring = "" + minute;
+
+        if (minutestring.length() == 1) {
+            minutestring = "0" + minute;
+        }
+        dateOutput = day + "/" + month + "/" + year + "  " + hour + ":" + minutestring;
+
         if(FileManager.compare(event)){
             button.setBackgroundColor(Color.RED);
+            button.setText(eventName + "\n " + eventHost + "\n" + eventLocation + "\n" + dateOutput);
         }
         else{
             button.setBackgroundResource(android.R.drawable.btn_default);
+            this.setText(pName + "\n " + pHost);
         }
 
         setOnClick();
 
 
 
-        this.setText(pName + "\n " + pHost);
+
 
     }
 
@@ -104,8 +141,8 @@ public class EventButton extends Button
 
     public boolean AddButtonToScreen(){
         screen = MainActivity.linearLayout;
-        MainActivity.linearParams.topMargin = 2;
-        MainActivity.linearParams.bottomMargin=2;
+        MainActivity.linearParams.topMargin = 3;
+        MainActivity.linearParams.bottomMargin=3;
         MainActivity.linearLayout.addView(button, MainActivity.linearParams);
         return false;
     }
@@ -170,20 +207,6 @@ public class EventButton extends Button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-
-                int timeTilEvent = getTimeDifference();
-                int day = eventDate.get(eventDate.DAY_OF_MONTH);
-                int month = eventDate.get(eventDate.MONTH);
-                int year = eventDate.get(eventDate.YEAR);
-                int hour = eventDate.get(eventDate.HOUR_OF_DAY);
-                int minute = eventDate.get(eventDate.MINUTE);
-                String minutestring = "" + minute;
-
-                if (minutestring.length() == 1) {
-                    minutestring = "0" + minute;
-                }
-                String dateOutput = day + "/" + month + "/" + year + "  " + hour + ":" + minutestring;
-
                 boolean isFound=FileManager.compare(event);
 
                 if (!isFound) {
@@ -198,6 +221,7 @@ public class EventButton extends Button
                                     FileManager.writeToFile(new Event(eventHost, eventName, eventLocation, eventDate), getContext());
                                     FileManager.readFromFile(getContext());
                                     button.setBackgroundColor(Color.RED);
+                                    button.setText(eventName + "\n " + eventHost + "\n" + eventLocation + "\n" + dateOutput);
 
                                 }
                             });
@@ -226,6 +250,7 @@ public class EventButton extends Button
                                     FileManager.eventList.remove(event);
                                     FileManager.updateFile(getContext());
                                     button.setBackgroundResource(android.R.drawable.btn_default);
+                                    button.setText(eventName + "\n " + eventHost + "\n");
                                     //FileManager.writeToFile(new Event(eventHost, eventName, eventLocation, eventDate), getContext());
                                     //FileManager.readFromFile(getContext());
                                 }

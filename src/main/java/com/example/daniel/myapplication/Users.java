@@ -16,4 +16,5 @@ public class Users
     public static String kate = "Kate Keenan";
     public static String ciara ="Ciara Ní Chathain";
     public static String andrew = "Andrew";
+    public static String maria = "Maria Mc Kenna";
 }

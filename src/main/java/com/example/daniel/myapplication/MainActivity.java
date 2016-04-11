@@ -53,11 +53,11 @@ static int count=0;
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    DialogFragment newFragment = new DatePickerFragment();
-                    newFragment.show(getFragmentManager(), "datePicker");
-                }
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
 
-            });
+        });
 
 
         addButtonToList(Users.lisa + " & " + Users.bekaton, " Meet and greet", Event.COSPLAYROOM, setupDate(2016, 04, 30, 10, 00));
@@ -78,15 +78,40 @@ static int count=0;
 
         addButtonToList(Users.lisa +" & " + Users.bekaton + " & " + Users.lorna, "artist copetition", Event.COSPLAYROOM, setupDate(2016, 04, 30, 15, 00));
         addButtonToList(Users.kate + " & " + Users.ciara,"Screening: JOJOs Bizarre adventure",Event.SCREENINGROOM,setupDate(2016,04,30,15,00));
-        addButtonToList(Users.andrew, "Valor Quest", Event.THEHUB, setupDate(2016, 04, 30, 13, 00));
+        addButtonToList(Users.andrew, "Valor Quest", Event.THEHUB, setupDate(2016, 04, 30, 15, 00));
 
 
         addButtonToList(Users.lisa +" & " + Users.bekaton + " & " + Users.lorna + " & " + Users.stephen, "Cosplay Contest Judging", Event.COSPLAYROOM, setupDate(2016, 04, 30, 16, 00));
         addButtonToList(Users.kate + " & " + Users.ciara,"Panel: JOJOs Bizarre adventure",Event.SCREENINGROOM,setupDate(2016,04,30,16,00));
 
-        addButtonToList(Users.lisa +" & " + Users.bekaton + " & " + Users.lorna + " & " + Users.stephen, "Cosplay Parade", Event.COSPLAYROOM, setupDate(2016, 04, 30, 16, 00));
+        addButtonToList(Users.lisa +" & " + Users.bekaton + " & " + Users.lorna + " & " + Users.stephen, "Cosplay Parade", Event.COSPLAYROOM, setupDate(2016, 04, 30, 17, 00));
 
-        addButtonToList(Users.lisa +" & " + Users.bekaton + " & " + Users.lorna + " & " + Users.stephen, "random event", Event.COSPLAYROOM, setupDate(2016, 05, 01, 16, 00));
+
+        addButtonToList(Users.lisa + " & " + Users.kate , "PhotoBooth", Event.COSPLAYROOM, setupDate(2016, 05, 01, 10, 00));
+        addButtonToList(Users.stephen , "Screening:Gintama", Event.SCREENINGROOM, setupDate(2016, 05, 01, 10, 00));
+        addButtonToList(Users.andrew , "Valoud Quest", Event.THEHUB, setupDate(2016, 05, 01, 10, 00));
+
+        addButtonToList(Users.bekaton , "Panel: creating Characters", Event.SCREENINGROOM, setupDate(2016, 05, 01, 11, 00));
+
+        addButtonToList(Users.stephen + " & " + Users.bekaton , "Nerd Theories", Event.COSPLAYROOM, setupDate(2016, 05, 01, 12, 00));
+        addButtonToList(Users.lisa + " & " + Users.fergal + " & " + Users.maria , "Panel: Batman Villains", Event.SCREENINGROOM, setupDate(2016, 05, 01, 12, 00));
+        addButtonToList(Users.phoebe , "Magic the gathering", Event.THEHUB, setupDate(2016, 05, 01, 12, 00));
+
+        addButtonToList(Users.stephen + " & " + Users.kate , "Dance Battle", Event.COSPLAYROOM, setupDate(2016, 05, 01, 13, 00));
+        addButtonToList(Users.lisa + " & " + Users.fergal + " & " + Users.maria , "Screening:Gintama", Event.SCREENINGROOM, setupDate(2016, 05, 01, 13, 00));
+
+        addButtonToList(Users.stephen, "Screening:Ghibli Nauscea Valley Of The Wind", Event.SCREENINGROOM, setupDate(2016, 05, 01, 14, 00));
+        addButtonToList(Users.rebecca , "Pathfinder", Event.THEHUB, setupDate(2016, 05, 01, 14, 00));
+
+        addButtonToList(Users.lisa + " & " + Users.maria + " & " + Users.bekaton + " & " + Users.lorna + " & " + Users.fergal, "Mini cons Mini quiz", Event.COSPLAYROOM, setupDate(2016, 05, 01, 15, 00));
+
+        addButtonToList(Users.lisa + " & " + Users.maria + " & " + Users.fergal, "Panel: Avatar", Event.COSPLAYROOM, setupDate(2016, 05, 01, 16, 00));
+        addButtonToList(Users.lisa + " & " + Users.maria + " & " + Users.fergal, "DND", Event.THEHUB, setupDate(2016, 05, 01, 16, 00));
+
+
+        addButtonToList("Mini Con volunteers", "Mini con closing ceremony and prizes", Event.THEHUB, setupDate(2016, 05, 01, 17, 00));
+
+
 
 
 
