@@ -67,8 +67,7 @@ public class EventButton extends Button
             button.setText(eventName + "\n " + eventHost + "\n" + eventLocation + "\n" + dateOutput);
         }
         else{
-            button.setBackgroundResource(android.R.drawable.btn_default);
-            this.setText(eventName + "\n " + eventHost);
+            removeInterest(false);
         }
 
         setOnClick();
@@ -104,8 +103,7 @@ public class EventButton extends Button
             button.setText(eventName + "\n " + eventHost + "\n" + eventLocation + "\n" + dateOutput);
         }
         else{
-            button.setBackgroundResource(android.R.drawable.btn_default);
-            this.setText(pName + "\n " + pHost);
+            removeInterest(false);
         }
 
         setOnClick();
@@ -114,6 +112,16 @@ public class EventButton extends Button
 
 
 
+    }
+
+    public void removeInterest(boolean shouldUpdateFile){
+        if(shouldUpdateFile) {
+            FileManager.clearDuplicates(event);
+            FileManager.eventList.remove(event);
+            FileManager.updateFile(getContext());
+        }
+        button.setBackgroundResource(android.R.drawable.btn_default);
+        button.setText(eventName + "\n " + eventHost);
     }
 
     public int getTimeDifference(){
@@ -246,11 +254,7 @@ public class EventButton extends Button
                             "Remove Interest",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    FileManager.clearDuplicates(event);
-                                    FileManager.eventList.remove(event);
-                                    FileManager.updateFile(getContext());
-                                    button.setBackgroundResource(android.R.drawable.btn_default);
-                                    button.setText(eventName + "\n " + eventHost + "\n");
+                                    removeInterest(true);
                                     //FileManager.writeToFile(new Event(eventHost, eventName, eventLocation, eventDate), getContext());
                                     //FileManager.readFromFile(getContext());
                                 }

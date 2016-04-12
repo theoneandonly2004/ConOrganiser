@@ -29,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
         return new GregorianCalendar(year,month,day,hour,minute);
     }
 
+    public void removeAllInterest(View v){
+        for(int count=0;count < buttons.size();count++){
+            if(buttons.get(count) != null){
+                buttons.get(count).removeInterest(false);
+            }
+        }
+        FileManager.eventList.clear();
+        FileManager.updateFile(getBaseContext());
+    }
+
 
 static int count=0;
     static LinearLayout linearLayout;

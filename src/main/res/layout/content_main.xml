@@ -31,13 +31,26 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Find Events"
+        android:text="Find Events by date"
         android:id="@+id/calendar_button"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="#3cd7dc"
         android:layout_alignParentLeft="false"
         android:layout_alignWithParentIfMissing="false"
-        android:layout_alignParentBottom="false" />
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear all interest"
+        android:id="@+id/button"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#3cd7dc"
+        android:onClick="removeAllInterest" />
 
 </RelativeLayout>
